@@ -1,5 +1,11 @@
+/* =====================================================
+   MOBILE-FIRST RESPONSIVE DESIGN
+   Base: Mobile (320px - 640px)
+   Progressive Enhancement: Tablet → Desktop
+===================================================== */
+
 /* -----------------------------------------
-       Reset & Base
+       CSS Variables
     ------------------------------------------*/
 :root {
     --brown: #5a2f1a;
@@ -12,53 +18,71 @@
     --radius: 18px;
 }
 
+/* -----------------------------------------
+       Global Reset (Mobile Base)
+    ------------------------------------------*/
 * {
-    box-sizing: border-box
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
 }
 
 html,
 body {
-    height: 100%
+    height: 100%;
+    overflow-x: hidden;
 }
 
 body {
     margin: 0;
-    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     color: #222;
     background: linear-gradient(180deg, #fbfaf9 0%, #f7f6f4 100%);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 a {
     color: inherit;
-    text-decoration: none
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
-img {
+img,
+video {
     max-width: 100%;
-    display: block
+    height: auto;
+    display: block;
 }
 
 /* -----------------------------------------
-       Layout container
+       Layout Container (Mobile Base)
     ------------------------------------------*/
 .wrap {
-    max-width: var(--container);
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
-    padding: 40px 24px;
+    padding: 16px;
 }
 
 /* -----------------------------------------
-       Header / Navbar
+       Header / Navbar (Mobile Base)
     ------------------------------------------*/
 header {
     position: sticky;
     top: 0;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(6px);
-    z-index: 40;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    z-index: 50;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    width: 100%;
 }
 
 .nav {
@@ -66,9 +90,17 @@ header {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
+    width: 100%;
+    padding: 12px 24px;
     max-width: var(--container);
     margin: 0 auto;
-    padding: 12px 24px;
+}
+
+@media (max-width: 768px) {
+    .nav {
+        padding: 10px 8px;
+        gap: 6px;
+    }
 }
 
 .brand {
@@ -79,6 +111,15 @@ header {
     color: var(--accent);
     font-size: 18px;
     letter-spacing: 0.6px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .brand {
+        gap: 6px;
+        font-size: 14px;
+        letter-spacing: 0.3px;
+    }
 }
 
 .brand .logo {
@@ -93,6 +134,15 @@ header {
     font-size: 14px;
 }
 
+@media (max-width: 768px) {
+    .brand .logo {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        font-size: 12px;
+    }
+}
+
 .brand .logo img {
     width: 100%;
     height: 100%;
@@ -101,15 +151,20 @@ header {
     border-radius: inherit;
 }
 
-/* Menu utama: jarak dan underline aktif */
+/* Desktop navigation - hidden on mobile */
 nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     gap: 32px;
-    /* beri jarak antar li sesuai contoh */
     align-items: center;
+}
+
+@media (max-width: 768px) {
+    nav ul {
+        display: none;
+    }
 }
 
 nav ul li a {
@@ -118,25 +173,29 @@ nav ul li a {
     text-transform: uppercase;
     padding-bottom: 8px;
     border-bottom: 2px solid transparent;
+    transition: border-color 0.2s;
 }
 
 nav ul li a:hover,
 nav ul li a:focus {
     border-bottom-color: var(--brown);
-    /* underline hover */
 }
 
 nav ul li a.is-active {
     border-bottom-color: var(--brown);
-    /* underline aktif */
     font-weight: 700;
 }
 
 .nav-actions {
     display: flex;
     gap: 14px;
-    /* beri jarak antar ikon dan tombol */
     align-items: center;
+}
+
+@media (max-width: 768px) {
+    .nav-actions {
+        gap: 6px;
+    }
 }
 
 .btn {
@@ -145,20 +204,26 @@ nav ul li a.is-active {
     padding: 10px 16px;
     border-radius: 28px;
     background: linear-gradient(90deg, #fea01c 0%, #ff7a59 100%);
-    /* lebih membulat dari 12px */
     border: none;
     cursor: pointer;
     font-weight: 600;
     font-size: 14px;
     box-shadow: 0 6px 18px rgba(255, 90, 70, 0.14);
+    white-space: nowrap;
+}
+
+/* Hide profile icon on desktop, show MY ACCOUNT button */
+.icon-profile {
+    display: none;
 }
 
 .icon-btn {
     background: transparent;
     border: 1px solid rgba(0, 0, 0, 0.06);
-    padding: 8px;
-    border-radius: 10px;
+    padding: 6px;
+    border-radius: 8px;
     color: #333;
+    flex-shrink: 0;
 }
 
 .icon-btn[title="Favorites"] {
@@ -170,10 +235,19 @@ nav ul li a.is-active {
     color: #e74c3c;
 }
 
+.icon-btn[title="Profile"] {
+    border-color: rgba(255, 142, 56, 0.2);
+    color: #ff8e38;
+}
+
+.icon-btn[title="Profile"] svg {
+    color: #ff8e38;
+}
+
 /* pastikan inline SVG ditampilkan dan mengikuti color parent */
 .icon-btn svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     display: block;
     stroke: currentColor;
     /* gunakan warna .icon-btn */
@@ -209,7 +283,7 @@ nav ul li a.is-active {
     gap: 40px;
     padding: 48px 60px 80px;
     background: rgb(250, 249, 247);
-    max-width: calc(var(--container) - 80px);
+    max-width: min(var(--container), 100vw);
     margin: 0 auto;
     border-radius: 20px;
 }
@@ -244,13 +318,24 @@ nav ul li a.is-active {
     background: linear-gradient(90deg, #fea01c 0%, #ff7a59 100%);
 }
 
-/* blob image */
 .hero-visual {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 360px;
+}
+
+.hero .bg-deco {
+    position: absolute;
+    right: -60px;
+    top: -40px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #FFF7EA, rgba(255, 240, 220, 0.2));
+    filter: blur(12px);
+    z-index: -1;
 }
 
 .blob {
@@ -283,7 +368,6 @@ nav ul li a.is-active {
     object-position: center;
 }
 
-/* Alternatif jika ingin tetap pakai border-radius organik */
 .blob-alt {
     width: 520px;
     height: 360px;
@@ -301,18 +385,7 @@ nav ul li a.is-active {
     clip-path: path("M0.27,0.07 C0.10,0.18 0.05,0.32 0.06,0.48 C0.07,0.64 0.15,0.76 0.30,0.86 C0.43,0.95 0.58,0.98 0.72,0.92 C0.88,0.85 0.96,0.72 0.97,0.55 C0.98,0.40 0.93,0.25 0.82,0.14 C0.70,0.02 0.55,0.00 0.39,0.02 C0.36,0.02 0.33,0.04 0.27,0.07 Z");
 }
 
-/* decorative light shape */
-.hero .bg-deco {
-    position: absolute;
-    right: -60px;
-    top: -40px;
-    width: 260px;
-    height: 260px;
-    border-radius: 50%;
-    background: linear-gradient(180deg, #FFF7EA, rgba(255, 240, 220, 0.2));
-    filter: blur(12px);
-    z-index: -1;
-}
+
 
 /* -----------------------------------------
        Special Dish (three icons)
@@ -407,7 +480,6 @@ nav ul li a.is-active {
     box-shadow: none !important;
 }
 
-/* pastikan gambar tidak melakukan scale atau filter saat hover */
 .dish-thumb img,
 .dish-card:hover .dish-thumb img {
     transition: none !important;
@@ -455,7 +527,6 @@ nav ul li a.is-active {
     background: linear-gradient(135deg, #fff, #fffefc);
 }
 
-/* pastikan gambar mengisi area yang dimask tanpa meluber */
 .featured .feat-img img {
     position: absolute;
     inset: 0;
@@ -636,13 +707,11 @@ nav ul li a.is-active {
     padding: 28px 80px;
 }
 
-/* left cluster */
 .faces {
     position: relative;
     height: 320px;
 }
 
-/* main masked blob */
 .faces .main-blob {
     position: absolute;
     left: 60px;
@@ -766,44 +835,9 @@ nav ul li a.is-active {
     border-radius: 6px;
 }
 
-/* responsive */
-@media (max-width: 1024px) {
-    .testi {
-        grid-template-columns: 1fr;
-        gap: 18px;
-    }
 
-    .faces {
-        height: 220px;
-    }
 
-    .faces .main-blob {
-        left: calc(50% - 110px);
-        top: 6px;
-        width: 220px;
-        height: 180px;
-    }
 
-    .faces .mini-face.f1 {
-        left: 12px;
-        top: 12px;
-    }
-}
-
-@media (max-width: 720px) {
-    .faces {
-        display: none;
-    }
-
-    /* hide decorative faces on small screens */
-    .testi {
-        grid-template-columns: 1fr;
-    }
-
-    .quote p {
-        font-size: 16px;
-    }
-}
 
 /* -----------------------------------------
        Mobile promo band
@@ -817,12 +851,12 @@ nav ul li a.is-active {
     box-sizing: border-box;
     background: #4a260f;
     padding: 28px 0;
+    padding-bottom: 180px;
     border-radius: 0;
-    overflow: visible;
+    overflow: hidden;
     z-index: 8;
 }
 
-/* inner remains centered, control band height via min-height */
 .promo .inner {
     max-width: var(--container);
     margin: 0 auto;
@@ -830,17 +864,20 @@ nav ul li a.is-active {
     display: grid;
     grid-template-columns: 1.2fr 420px;
     align-items: center;
+    padding-top: 32px;
+    padding-bottom: 32px;
     min-height: 260px;
 }
 
-/* make sure mock-phone stays taller and overlaps the band */
 .mock-phone {
     position: absolute;
     right: 150px;
-    top: 0;
-    transform: translateY(-70px);
+    top: auto;
+    bottom: -24px;
+    transform: none;
     width: 251px;
-    height: 450px;
+    height: fit-content;
+    min-height: unset;
     border-radius: 22px;
     background: linear-gradient(180deg, #fff9e6 0%, #fff5df 100%);
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.22);
@@ -853,7 +890,6 @@ nav ul li a.is-active {
     box-sizing: border-box;
 }
 
-/* small logo top-left */
 .mock-phone::before {
     content: "";
     position: absolute;
@@ -868,7 +904,6 @@ nav ul li a.is-active {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-/* hamburger top-right (three bars) */
 .mock-phone::after {
     content: "";
     position: absolute;
@@ -887,20 +922,19 @@ nav ul li a.is-active {
     pointer-events: none;
 }
 
-/* smaller blob inside phone, masked with pe.svg */
 .mock-phone .hero-visual {
     width: 100%;
     display: flex;
     flex: 0 0 auto;
     justify-content: center;
     align-items: center;
-    height: 150px;
+    height: 110px;
     margin-top: 6px;
 }
 
 .mock-phone .hero-visual .blob {
-    width: 150px;
-    height: 150px;
+    width: 110px;
+    height: 110px;
     background: linear-gradient(135deg, #fff 0%, #fff7eb 100%);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
     position: relative;
@@ -922,7 +956,6 @@ nav ul li a.is-active {
     object-fit: cover;
 }
 
-/* phone text area */
 .mock-phone .mini-body {
     flex: 1 1 auto;
     min-height: 0;
@@ -961,13 +994,6 @@ nav ul li a.is-active {
     padding: 10px 18px;
 }
 
-/* responsive: kurangi pengangkatan pada layar lebih kecil */
-@media (max-width:1024px) {
-    .mock-phone .mini-body {
-        transform: translateY(-14px);
-    }
-}
-
 @media (max-width:720px) {
     .mock-phone .mini-body {
         transform: translateY(-8px);
@@ -997,21 +1023,17 @@ footer {
     margin-bottom: 12px;
 }
 
-/* Useful Links: dua kolom */
 .footer-grid ul {
     list-style: none;
     padding: 0;
     margin-top: 8px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    /* dua kolom */
     gap: 8px 16px;
-    /* jarak vertikal dan horizontal */
 }
 
 .footer-grid ul li {
     margin-bottom: 0;
-    /* hapus margin karena sudah pakai gap */
 }
 
 .footer-grid ul li a {
@@ -1023,7 +1045,6 @@ footer {
     color: var(--accent);
 }
 
-/* Get in Touch: ikon telepon & lokasi */
 .contact-item {
     display: flex;
     align-items: flex-start;
@@ -1075,88 +1096,8 @@ footer {
     background: #e60023;
 }
 
-/* -----------------------------------------
-       Responsive
-    ------------------------------------------*/
-@media (max-width:1024px) {
-    .hero {
-        grid-template-columns: 1fr 420px
-    }
 
-    .blob {
-        width: 420px;
-        height: 300px
-    }
 
-    .featured {
-        flex-direction: column;
-        align-items: flex-start
-    }
-
-    .featured .feat-img {
-        width: 100%;
-        height: 260px
-    }
-
-    .menu-preview {
-        grid-template-columns: repeat(2, 1fr)
-    }
-
-    .special-grid {
-        grid-template-columns: repeat(2, 1fr)
-    }
-}
-
-@media (max-width:720px) {
-    .wrap {
-        padding: 18px
-    }
-
-    nav ul {
-        display: none
-    }
-
-    .nav .menu-toggle {
-        display: inline-flex
-    }
-
-    .hero {
-        grid-template-columns: 1fr;
-        gap: 24px;
-        padding: 36px 20px;
-        /* kurangi padding di mobile */
-    }
-
-    .blob {
-        width: 100%;
-        height: 260px;
-        border-radius: 28px
-    }
-
-    .hero .bg-deco {
-        display: none
-    }
-
-    .special-grid {
-        grid-template-columns: 1fr
-    }
-
-    .menu-preview {
-        grid-template-columns: 1fr
-    }
-
-    .footer-grid {
-        grid-template-columns: 1fr
-    }
-
-    .promo {
-        flex-direction: column;
-        align-items: center;
-        text-align: center
-    }
-}
-
-/* menu toggle for mobile */
 .menu-toggle {
     display: none;
     background: transparent;
@@ -1187,28 +1128,34 @@ footer {
     display: block
 }
 
-/* Promo: teks di kolom kiri menjadi putih */
+.promo .text {
+    align-self: center;
+}
+
+@media (min-width: 1025px) {
+    .promo .text {
+        align-self: end;
+        padding-bottom: 40px;
+    }
+}
+
 .promo .text,
 .promo .text h1,
 .promo .text .small {
     color: #ffffff !important;
 }
 
-/* pastikan tombol masih terbaca (jika pakai background gelap pada btn) */
 .promo .text .btn {
     color: #f9f9f9;
-    /* tetap kontras terhadap gradien kuning->oren */
     background: linear-gradient(90deg, #fea01c 0%, #ff7a59 100%);
     border: none;
 }
 
-/* Override: hilangkan kotak di sekitar icon (Favorites / Cart / Search) */
 .nav-actions .icon-btn {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
     padding: 6px 6px !important;
-    /* tetap beri area klik */
     border-radius: 6px !important;
     display: inline-flex;
     align-items: center;
@@ -1225,8 +1172,945 @@ footer {
 }
 
 /* jika sebelumnya ada rule khusus border-color untuk favorites, override juga */
-.icon-btn[title="Favorites"] {
+.icon-btn[title="Favorites"],
+.icon-btn[title="Profile"] {
     border: none !important;
     box-shadow: none !important;
     background: transparent !important;
+}
+
+/* =============================
+   RESPONSIVE MEDIA QUERIES
+============================= */
+
+/* Desktop Large (1200px+) - Default styles above */
+
+/* Desktop & Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .nav {
+        padding: 12px 16px;
+        gap: 12px;
+    }
+
+    nav ul {
+        gap: 20px;
+    }
+
+    nav ul li a {
+        font-size: 13px;
+    }
+
+    .hero {
+        grid-template-columns: 1fr 420px;
+        gap: 32px;
+        padding: 40px 40px 64px;
+    }
+
+    .hero .content {
+        padding-left: 0;
+    }
+
+    .hero .content h1 {
+        font-size: 30px;
+    }
+
+    .blob {
+        width: 320px;
+        height: 300px;
+    }
+
+    .blob-alt,
+    .blob-shape {
+        width: 420px;
+        height: 300px;
+    }
+
+    .testi {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .special-dish {
+        padding: 28px 40px 16px;
+        max-width: min(var(--container), 100vw);
+    }
+
+    .special-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+    }
+
+    .faces {
+        height: 220px;
+    }
+
+    .faces .main-blob {
+        left: calc(50% - 110px);
+        top: 6px;
+        width: 220px;
+        height: 180px;
+    }
+
+    .faces .mini-face.f1 {
+        left: 12px;
+        top: 12px;
+    }
+
+    .featured {
+        padding: 28px 40px;
+        gap: 24px;
+        max-width: min(var(--container), 100vw);
+    }
+
+    .featured .feat-img {
+        width: 300px;
+        height: 190px;
+    }
+
+    .featured .feat-content h3 {
+        font-size: 20px;
+    }
+
+    .menu-section {
+        padding: 28px 40px;
+        max-width: min(var(--container), 100vw);
+    }
+
+    .menu-layout {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .menu-intro .small {
+        max-width: 100%;
+    }
+
+    .menu-preview {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+
+    .promo {
+        padding-bottom: 140px;
+    }
+
+    .promo .inner {
+        grid-template-columns: 1fr 320px;
+        padding: 0 48px;
+        min-height: 220px;
+    }
+
+    .promo .text {
+        align-self: center;
+        padding-bottom: 0;
+    }
+
+    .mock-phone {
+        right: 48px;
+        bottom: -12px;
+        width: 200px;
+        border-radius: 18px;
+        padding: 0 8px 8px;
+    }
+
+    .mock-phone::before {
+        left: 10px;
+        top: 10px;
+        width: 36px;
+        height: 36px;
+    }
+
+    .mock-phone::after {
+        right: 12px;
+        top: 16px;
+        width: 14px;
+    }
+
+    .mock-phone .hero-visual {
+        height: 85px;
+        margin-top: 4px;
+    }
+
+    .mock-phone .hero-visual .blob {
+        width: 85px;
+        height: 85px;
+    }
+
+    .mock-phone .mini-body {
+        padding: 4px 10px 8px;
+        gap: 3px;
+    }
+
+    .mock-phone .phone-title {
+        font-size: 13.5px;
+        line-height: 1.2;
+    }
+
+    .mock-phone .phone-lead {
+        font-size: 10.5px;
+        line-height: 1.4;
+        max-width: 160px;
+    }
+
+    .mock-phone .phone-btn {
+        width: 120px;
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+    }
+
+    .footer-grid ul {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Tablet (max-width: 900px) */
+@media (max-width: 900px) {
+    .hero {
+        max-width: 100%;
+        padding: 40px 32px 56px;
+        grid-template-columns: 1fr 360px;
+    }
+
+    .blob,
+    .blob-alt,
+    .blob-shape {
+        width: 100%;
+        max-width: 340px;
+        height: auto;
+        aspect-ratio: 4 / 3;
+    }
+
+    .testi {
+        grid-template-columns: 320px 1fr;
+        padding: 24px 40px;
+        gap: 24px;
+        max-width: 100%;
+    }
+
+    .faces {
+        height: 280px;
+    }
+
+    .faces .main-blob {
+        width: 260px;
+        height: 215px;
+        left: 30px;
+        top: 20px;
+    }
+
+    .promo .inner {
+        grid-template-columns: 1fr 320px;
+        padding: 0 48px;
+        min-height: 220px;
+    }
+
+    .mock-phone {
+        right: 40px;
+        width: 190px;
+    }
+
+    .mock-phone .hero-visual {
+        height: 80px;
+    }
+
+    .mock-phone .hero-visual .blob {
+        width: 80px;
+        height: 80px;
+    }
+
+    .mock-phone .phone-title {
+        font-size: 13px;
+    }
+
+    .mock-phone .phone-lead {
+        font-size: 10px;
+        max-width: 150px;
+    }
+
+    .mock-phone .phone-btn {
+        width: 110px;
+        padding: 7px 12px;
+        font-size: 11px;
+    }
+}
+
+/* Tablet Small (max-width: 768px) */
+@media (max-width: 768px) {
+
+    /* Hide MY ACCOUNT button on mobile, show profile icon */
+    .btn-account {
+        display: none;
+    }
+
+    .icon-profile {
+        display: inline-flex;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+        padding: 32px 24px 48px;
+        text-align: center;
+    }
+
+    .hero .content {
+        padding-left: 0;
+        order: 2;
+    }
+
+    .hero-visual {
+        order: 1;
+        min-height: auto;
+        margin-bottom: 24px;
+    }
+
+    .hero-cta {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .hero .content h1 {
+        font-size: 26px;
+        line-height: 1.15;
+    }
+
+    .hero p.lead {
+        max-width: none;
+        font-size: 14px;
+    }
+
+    .blob {
+        width: 260px;
+        height: 240px;
+    }
+
+    .blob-alt,
+    .blob-shape {
+        width: 300px;
+        height: 220px;
+    }
+
+    .hero .bg-deco {
+        display: none;
+    }
+
+    .special-dish {
+        padding: 24px 20px 12px;
+        max-width: 100%;
+    }
+
+    .special-dish h3 {
+        font-size: 20px;
+    }
+
+    .special-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .dish-thumb {
+        width: 100px;
+        height: 100px;
+    }
+
+    .dish-desc {
+        font-size: 13px;
+    }
+
+    .featured {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px 20px;
+        gap: 20px;
+        max-width: 100%;
+    }
+
+    .featured .feat-img {
+        width: 100%;
+        max-width: 320px;
+        height: 200px;
+    }
+
+    .featured .feat-content p {
+        font-size: 13px;
+        line-height: 1.55;
+    }
+
+    .featured .feat-content .btn {
+        margin-top: 14px;
+    }
+
+    .menu-section {
+        padding: 24px 20px;
+        max-width: 100%;
+    }
+
+    .menu-preview {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .menu-card .m-thumb {
+        height: 160px;
+    }
+
+    .menu-card h4 {
+        font-size: 14px;
+    }
+
+    .menu-card .meta .price {
+        font-size: 14px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .footer-grid ul {
+        grid-template-columns: 1fr;
+    }
+
+    footer {
+        padding: 20px 0;
+    }
+
+    .social-icons {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+}
+
+/* Mobile Large (max-width: 720px) */
+@media (max-width: 720px) {
+    .wrap {
+        padding: 18px;
+    }
+
+    .nav .menu-toggle {
+        display: inline-flex;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 36px 20px;
+    }
+
+    .blob {
+        width: 100%;
+        height: 260px;
+        border-radius: 28px;
+    }
+
+    .special-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-preview {
+        grid-template-columns: 1fr;
+    }
+
+    .faces {
+        display: none;
+    }
+
+    .testi {
+        grid-template-columns: 1fr;
+    }
+
+    .quote p {
+        font-size: 16px;
+    }
+
+    .mock-phone {
+        display: none !important;
+    }
+
+    .promo {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding-bottom: 48px;
+    }
+
+    .promo .inner {
+        padding: 0 20px;
+    }
+}
+
+/* Mobile (max-width: 640px) */
+@media (max-width: 640px) {
+    .testi {
+        grid-template-columns: 1fr;
+        padding: 24px 20px;
+        gap: 28px;
+    }
+
+    .faces {
+        height: 220px;
+        justify-self: center;
+    }
+
+    .faces .main-blob {
+        position: relative;
+        left: 0;
+        top: 0;
+        width: 220px;
+        height: 180px;
+        margin: 0 auto;
+    }
+
+    .faces .mini-face {
+        width: 42px;
+        height: 42px;
+        border-width: 4px;
+    }
+
+    .faces .mini-face.f1 {
+        left: -6px;
+        top: 10px;
+    }
+
+    .faces .mini-face.f2 {
+        left: 10px;
+        top: 160px;
+    }
+
+    .faces .mini-face.f3 {
+        left: 140px;
+        top: -6px;
+    }
+
+    .faces .mini-face.f4 {
+        left: 160px;
+        top: 140px;
+    }
+
+    .quote {
+        padding: 22px;
+        text-align: center;
+    }
+
+    .quote p {
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .promo {
+        padding: 40px 0 80px;
+        left: 0;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    .promo .inner {
+        grid-template-columns: 1fr;
+        padding: 0 20px;
+        text-align: center;
+        min-height: auto;
+    }
+
+    .promo .text {
+        align-self: center;
+        padding-bottom: 0;
+    }
+
+    .mock-phone {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        margin: 0 auto;
+        width: 180px;
+        border-radius: 16px;
+        padding: 0 8px 8px;
+        display: none;
+    }
+
+    .mock-phone::before {
+        left: 8px;
+        top: 8px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .mock-phone::after {
+        right: 10px;
+        top: 12px;
+        width: 12px;
+    }
+
+    .mock-phone .hero-visual {
+        height: 75px;
+        margin-top: 3px;
+    }
+
+    .mock-phone .hero-visual .blob {
+        width: 75px;
+        height: 75px;
+    }
+
+    .mock-phone .mini-body {
+        padding: 3px 8px 6px;
+        gap: 2px;
+    }
+
+    .mock-phone .phone-title {
+        font-size: 12px;
+        line-height: 1.25;
+    }
+
+    .mock-phone .phone-lead {
+        font-size: 9.5px;
+        line-height: 1.35;
+        max-width: 140px;
+    }
+
+    .mock-phone .phone-btn {
+        width: 100%;
+        padding: 7px 12px;
+        font-size: 11px;
+        margin-top: 4px;
+    }
+}
+
+/* Mobile Small (max-width: 480px) */
+@media (max-width: 480px) {
+    .nav {
+        padding: 8px 12px;
+    }
+
+    .nav-actions {
+        gap: 8px;
+    }
+
+    nav ul li a {
+        font-size: 12px;
+    }
+
+    .hero {
+        padding: 28px 16px 40px;
+        border-radius: 14px;
+    }
+
+    .hero .content h1 {
+        font-size: 22px;
+    }
+
+    .blob {
+        width: 220px;
+        height: 200px;
+    }
+
+    .special-dish {
+        padding: 20px 16px 10px;
+    }
+
+    .special-dish h3 {
+        font-size: 18px;
+    }
+
+    .dish-thumb {
+        width: 88px;
+        height: 88px;
+    }
+
+    .dish-title {
+        font-size: 15px;
+    }
+
+    .dish-desc {
+        font-size: 12.5px;
+        line-height: 1.45;
+    }
+
+    .featured {
+        padding: 20px 16px;
+        border-radius: 16px;
+    }
+
+    .featured .feat-img {
+        height: 180px;
+        border-radius: 18px;
+    }
+
+    .featured .feat-content h3 {
+        font-size: 18px;
+    }
+
+    .featured .feat-content p {
+        font-size: 12.5px;
+    }
+
+    .menu-section {
+        padding: 20px 16px;
+        margin: 32px auto 6px;
+    }
+
+    .menu-card {
+        border-radius: 14px;
+    }
+
+    .menu-card .m-thumb {
+        height: 140px;
+    }
+
+    .menu-card h4 {
+        margin: 10px 12px 4px;
+        font-size: 13.5px;
+    }
+
+    .menu-card .menu-subtitle {
+        font-size: 11.5px;
+    }
+
+    .menu-card .meta a {
+        font-size: 11px;
+    }
+
+    .brand .logo {
+        width: 36px;
+        height: 36px;
+    }
+
+    .brand {
+        font-size: 16px;
+    }
+
+    .mock-phone {
+        width: 160px;
+        padding: 0 6px 6px;
+    }
+
+    .mock-phone::before {
+        width: 26px;
+        height: 26px;
+        left: 6px;
+        top: 6px;
+    }
+
+    .mock-phone::after {
+        width: 10px;
+        right: 8px;
+        top: 10px;
+    }
+
+    .mock-phone .hero-visual {
+        height: 65px;
+    }
+
+    .mock-phone .hero-visual .blob {
+        width: 65px;
+        height: 65px;
+    }
+
+    .mock-phone .mini-body {
+        padding: 2px 6px 4px;
+    }
+
+    .mock-phone .phone-title {
+        font-size: 11px;
+    }
+
+    .mock-phone .phone-lead {
+        font-size: 8.5px;
+        max-width: 120px;
+    }
+
+    .mock-phone .phone-btn {
+        padding: 6px 10px;
+        font-size: 10px;
+    }
+}
+
+/* =====================================================
+   RESPONSIVE AUTHORITY LAYER
+   (FINAL OVERRIDE — DO NOT MOVE UP)
+===================================================== */
+
+/* ---------- GLOBAL SAFETY ---------- */
+img,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ---------- NAV FIX ---------- */
+@media (max-width: 768px) {
+    nav ul {
+        display: none !important;
+    }
+
+    .menu-toggle {
+        display: inline-flex !important;
+    }
+}
+
+/* ---------- HERO FIX ---------- */
+@media (max-width: 1024px) {
+    .hero {
+        grid-template-columns: 1fr !important;
+        padding: 32px 24px 48px !important;
+        text-align: center;
+    }
+
+    .hero .content {
+        padding-left: 0 !important;
+    }
+
+    .hero-visual {
+        order: -1;
+        margin-bottom: 24px;
+    }
+
+    .hero-cta {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+/* ---------- BLOB SAFETY ---------- */
+@media (max-width: 768px) {
+
+    .blob,
+    .blob-alt,
+    .blob-shape {
+        width: min(280px, 90vw) !important;
+        height: auto !important;
+        aspect-ratio: 4 / 3;
+    }
+}
+
+/* ---------- GRID NORMALIZATION ---------- */
+@media (max-width: 1024px) {
+
+    .special-grid,
+    .menu-preview {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 640px) {
+
+    .special-grid,
+    .menu-preview {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ---------- FEATURED ---------- */
+@media (max-width: 768px) {
+    .featured {
+        flex-direction: column !important;
+        text-align: center;
+        padding: 24px 20px !important;
+    }
+
+    .featured .feat-img {
+        width: 100% !important;
+        max-width: 320px;
+    }
+}
+
+/* ---------- TESTIMONIAL ---------- */
+@media (max-width: 768px) {
+    .testi {
+        grid-template-columns: 1fr !important;
+    }
+
+    .faces {
+        display: none !important;
+    }
+}
+
+/* ---------- PROMO + MOCK PHONE ---------- */
+@media (max-width: 1024px) {
+    .promo .inner {
+        grid-template-columns: 1fr !important;
+        padding: 0 24px !important;
+        text-align: center;
+    }
+
+    .mock-phone {
+        position: relative !important;
+        right: auto !important;
+        bottom: auto !important;
+        margin: 24px auto 0 !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .mock-phone {
+        display: none !important;
+    }
+}
+
+/* ---------- FOOTER ---------- */
+@media (max-width: 1024px) {
+    .footer-grid {
+        grid-template-columns: 1fr 2fr 1fr !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .footer-grid {
+        grid-template-columns: 1fr !important;
+        text-align: center;
+    }
+
+    .social-icons {
+        justify-content: center;
+    }
+}
+
+/* ---------- iPhone SE ---------- */
+@media (max-width: 375px) {
+    .hero .content h1 {
+        font-size: 22px !important;
+    }
+
+    .btn {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 375px) {
+
+    header,
+    .navbar {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .navbar>* {
+        min-width: 0;
+    }
+
+    .btn-account {
+        padding: 8px 12px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .btn-account span {
+        display: none;
+    }
+
+    .nav-icons .icon-search,
+    .nav-icons .icon-favorite {
+        display: none;
+    }
 }
